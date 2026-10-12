@@ -1,42 +1,123 @@
 // ==========================================
-// SCRIPT QUERY MONGODB - E-COMMERCE
+// SCRIPT QUERY MONGODB - E-COMMERCE (KATALOG PRODUK)
 // Database: e_commerce | Collection: produk
 // ==========================================
 
 use e_commerce;
 
-// 1. Insert 10 Data Produk
+// 1. INSERT DATA PRODUK (10 Dokumen dengan Nested Document & Array)
 db.produk.insertMany([
-  { id_produk: "P001", nama: "Sepatu Sneakers Pria", kategori: "Sepatu", harga: 350000, stok: 15 },
-  { id_produk: "P002", nama: "Sepatu Running Wanita", kategori: "Sepatu", harga: 420000, stok: 10 },
-  { id_produk: "P003", nama: "Kemeja Flanel Casual", kategori: "Pakaian", harga: 175000, stok: 25 },
-  { id_produk: "P004", nama: "Kaos Polos Cotton Combed", kategori: "Pakaian", harga: 65000, stok: 50 },
-  { id_produk: "P005", nama: "Tas Ransel Laptop", kategori: "Aksesoris", harga: 250000, stok: 12 },
-  { id_produk: "P006", nama: "Dompet Kulit Asli", kategori: "Aksesoris", harga: 120000, stok: 20 },
-  { id_produk: "P007", nama: "Jam Tangan Chronograph", kategori: "Aksesoris", harga: 750000, stok: 8 },
-  { id_produk: "P008", nama: "Celana Jeans Slim Fit", kategori: "Pakaian", harga: 230000, stok: 18 },
-  { id_produk: "P009", nama: "Topi Baseball Distro", kategori: "Aksesoris", harga: 45000, stok: 30 },
-  { id_produk: "P010", nama: "Sandal Kulit Pria", kategori: "Sepatu", harga: 110000, stok: 5 }
+  {
+    "sku": "P001",
+    "nama_produk": "Laptop Gaming X",
+    "kategori": "Elektronik",
+    "harga": 15000000,
+    "stok": 25,
+    "spesifikasi": { "ram": "16GB", "penyimpanan": "512GB SSD" },
+    "tag": ["laptop", "gaming"]
+  },
+  {
+    "sku": "P002",
+    "nama_produk": "Smartphone Y",
+    "kategori": "Elektronik",
+    "harga": 5000000,
+    "stok": 40,
+    "spesifikasi": { "ram": "8GB", "penyimpanan": "128GB" },
+    "tag": ["hp", "android"]
+  },
+  {
+    "sku": "P003",
+    "nama_produk": "Kemeja Flanel",
+    "kategori": "Pakaian",
+    "harga": 150000,
+    "stok": 100,
+    "spesifikasi": { "bahan": "Katun", "ukuran": ["M", "L", "XL"] },
+    "tag": ["baju", "pria"]
+  },
+  {
+    "sku": "P004",
+    "nama_produk": "Celana Jeans",
+    "kategori": "Pakaian",
+    "harga": 250000,
+    "stok": 60,
+    "spesifikasi": { "bahan": "Denim", "ukuran": ["30", "32", "34"] },
+    "tag": ["celana"]
+  },
+  {
+    "sku": "P005",
+    "nama_produk": "Sepatu Sneakers",
+    "kategori": "Sepatu",
+    "harga": 600000,
+    "stok": 30,
+    "spesifikasi": { "bahan": "Kanvas", "ukuran": ["40", "41", "42"] },
+    "tag": ["sepatu", "sport"]
+  },
+  {
+    "sku": "P006",
+    "nama_produk": "Mouse Wireless",
+    "kategori": "Elektronik",
+    "harga": 200000,
+    "stok": 80,
+    "spesifikasi": { "koneksi": "Bluetooth", "dpi": "1600" },
+    "tag": ["aksesoris"]
+  },
+  {
+    "sku": "P007",
+    "nama_produk": "Keyboard Mechanical",
+    "kategori": "Elektronik",
+    "harga": 750000,
+    "stok": 45,
+    "spesifikasi": { "switch": "Blue", "rgb": true },
+    "tag": ["aksesoris", "gaming"]
+  },
+  {
+    "sku": "P008",
+    "nama_produk": "Jaket Hoodie",
+    "kategori": "Pakaian",
+    "harga": 300000,
+    "stok": 50,
+    "spesifikasi": { "ukuran": ["L", "XL"] },
+    "tag": ["jaket"]
+  },
+  {
+    "sku": "P009",
+    "nama_produk": "Tas Ransel",
+    "kategori": "Aksesoris",
+    "harga": 400000,
+    "stok": 35,
+    "spesifikasi": { "kapasitas": "20L", "anti_air": true },
+    "tag": ["tas"]
+  },
+  {
+    "sku": "P010",
+    "nama_produk": "Topi Baseball",
+    "kategori": "Aksesoris",
+    "harga": 75000,
+    "stok": 90,
+    "spesifikasi": { "bahan": "Drill" },
+    "tag": ["topi"]
+  }
 ]);
 
-// 2. Query Read (Filter Harga > 200.000)
-db.produk.find({ harga: { $gt: 200000 } });
+// 2. QUERY READ (Mencari produk dengan harga di atas 1.000.000)
+db.produk.find({ harga: { $gt: 1000000 } });
 
-// 3. Query Update (Ubah Stok P001 menjadi 25)
+// 3. QUERY UPDATE (Mengubah stok produk P001 menjadi 30)
 db.produk.updateOne(
-  { id_produk: "P001" },
-  { $set: { stok: 25 } }
+  { sku: "P001" },
+  { $set: { stok: 30 } }
 );
 
-// 4. Query Delete (Hapus Produk P010)
-db.produk.deleteOne({ id_produk: "P010" });
+// 4. QUERY DELETE (Menghapus produk dengan SKU P010)
+db.produk.deleteOne({ sku: "P010" });
 
-// 5. Query Aggregation (Total Stok Berdasarkan Kategori)
+// 5. QUERY AGGREGATION (Menghitung total stok berdasarkan kategori produk)
 db.produk.aggregate([
   {
     $group: {
       _id: "$kategori",
-      totalStok: { $sum: "$stok" }
+      totalStok: { $sum: "$stok" },
+      rataRataHarga: { $avg: "$harga" }
     }
   }
 ]);
